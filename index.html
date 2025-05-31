@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GymFlow AI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 2rem;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+    }
+    .pay-button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 1rem 2rem;
+      text-decoration: none;
+      font-size: 1.2rem;
+      border-radius: 8px;
+      display: inline-block;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to GymFlow AI</h1>
+    <p>Your AI-powered assistant for gyms. Automate leads, answer questions, and grow your memberships 24/7.</p>
+    <a href="https://buy.stripe.com/8wM6qR3kr6eR7Q8bII" target="_blank" class="pay-button">
+      Get Started – $149 AUD
+    </a>
+  </div>
+
+  <!-- Simple chatbot embed placeholder -->
+  <script>
+    (function() {
+      let botBubble = document.createElement('div');
+      botBubble.style.position = 'fixed';
+      botBubble.style.bottom = '20px';
+      botBubble.style.right = '20px';
+      botBubble.style.width = '60px';
+      botBubble.style.height = '60px';
+      botBubble.style.background = '#4CAF50';
+      botBubble.style.borderRadius = '50%';
+      botBubble.style.display = 'flex';
+      botBubble.style.justifyContent = 'center';
+      botBubble.style.alignItems = 'center';
+      botBubble.style.color = '#fff';
+      botBubble.style.fontSize = '30px';
+      botBubble.style.cursor = 'pointer';
+      botBubble.innerText = '💬';
+      botBubble.onclick = () => alert('Hi! I’m your GymFlow AI assistant. How can I help?');
+      document.body.appendChild(botBubble);
+    })();
+  </script>
+</body>
+</html>
