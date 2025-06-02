@@ -39,24 +39,51 @@
 
   <!-- Simple chatbot embed placeholder -->
   <script>
-    (function() {
-      let botBubble = document.createElement('div');
-      botBubble.style.position = 'fixed';
-      botBubble.style.bottom = '20px';
-      botBubble.style.right = '20px';
-      botBubble.style.width = '60px';
-      botBubble.style.height = '60px';
-      botBubble.style.background = '#4CAF50';
-      botBubble.style.borderRadius = '50%';
-      botBubble.style.display = 'flex';
-      botBubble.style.justifyContent = 'center';
-      botBubble.style.alignItems = 'center';
-      botBubble.style.color = '#fff';
-      botBubble.style.fontSize = '30px';
-      botBubble.style.cursor = 'pointer';
-      botBubble.innerText = '💬';
-      botBubble.onclick = () => alert('Hi! I’m your GymFlow AI assistant. How can I help?');
-      document.body.appendChild(botBubble);
+    <script>
+  // Mobile keyboard fix
+  document.addEventListener("touchstart", function (event) {
+    if (
+      event.target.tagName === "INPUT" ||
+      event.target.tagName === "TEXTAREA" ||
+      event.target.isContentEditable
+    ) {
+      event.target.focus();
+    }
+  });
+
+  // Create chat bubble
+  (function () {
+    let botBubble = document.createElement('div');
+    botBubble.style.position = 'fixed';
+    botBubble.style.bottom = '20px';
+    botBubble.style.right = '20px';
+    botBubble.style.width = '60px';
+    botBubble.style.height = '60px';
+    botBubble.style.background = '#4CAF50';
+    botBubble.style.borderRadius = '50%';
+    botBubble.style.display = 'flex';
+    botBubble.style.justifyContent = 'center';
+    botBubble.style.alignItems = 'center';
+    botBubble.style.color = '#fff';
+    botBubble.style.fontSize = '30px';
+    botBubble.style.cursor = 'pointer';
+    botBubble.innerText = '💬';
+
+    botBubble.onclick = () => {
+      let chatContainer = document.createElement('div');
+      chatContainer.innerHTML = `
+        <div style="position:fixed;bottom:100px;right:20px;width:300px;">
+          <input id="chatInput" type="text" placeholder="Type a message..." style="width:100%;padding:10px;font-size:16px;">
+        </div>`;
+      document.body.appendChild(chatContainer);
+      setTimeout(() => document.getElementById('chatInput').focus(), 100); // Triggers keyboard
+    };
+
+    document.body.appendChild(botBubble);
+  })();
+</script>
+
+    
     })();
   </script>
 </body>
