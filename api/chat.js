@@ -31,8 +31,7 @@ module.exports = async (req, res) => {
       return res.status(500).json({ error: data });
     }
 
-    const reply = data.choices?.[0]?.message?.content || 'Sorry, no reply.';
-    res.status(200).json({ reply });
+    const reply = data?.choices?.[0]?.message?.content ?? 'Sorry, no reply from AI.';
 
   } catch (error) {
     console.error('Server error:', error);
