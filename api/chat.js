@@ -1,5 +1,3 @@
-const fetch = require('node-fetch');
-
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -7,7 +5,6 @@ module.exports = async (req, res) => {
 
   try {
     const buffers = [];
-
     for await (const chunk of req) {
       buffers.push(chunk);
     }
