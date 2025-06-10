@@ -12,7 +12,7 @@ export default async function handler(req, res) {
   }
 
   const apiKey = process.env.OPENAI_API_KEY;
-
+  const { message } = req.body;
   if (!apiKey) {
     return res.status(500).json({ error: 'OpenAI API key is missing in environment variables' });
   }
