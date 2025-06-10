@@ -44,7 +44,7 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Unexpected OpenAI response structure', details: data });
     }
 
-  } catch (err) {
-    return res.status(500).json({ error: 'Unhandled server error', message: err.message });
+    console.error("SERVER ERROR:", err);
+    return res.status(500).json({ error: 'Unhandled server error', stack: err.stack, message: err.message });
   }
 }
