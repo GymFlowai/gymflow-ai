@@ -18,20 +18,22 @@ export default async function handler(req, res) {
   }
 
   try {
-    const openaiRes = await fetch('https://api.openai.com/v1/chat/completions', {
+    const response = await fetch('api/chat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
       },
-      body: JSON.stringify({
+      body: JSON.stringify({ message: userInput })
         model: 'gpt-3.5-turbo',
         messages: [{ role: 'user', content: message }],
         temperature: 0.7
-      })
     });
 
-    const data = await openaiRes.json();
+    const data = await response.json();
+    const reply =data.reply;
+
+    // Now display the reply in your chat bubble
+    addMessageToChat('GymFlow AI', reply);
 
     if (!openaiRes.ok) {
       return res.status(500).json({ error: 'OpenAI error', details: data });
