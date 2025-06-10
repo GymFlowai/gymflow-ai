@@ -164,6 +164,7 @@
               body: JSON.stringify({ message: userMsg })
             });
             const data = await res.json();
+            console.log("API Response:", data);//
             log.innerHTML += "<div><strong>GymFlow AI:</strong> ${data.reply || 'No response received."}</div>";
           } catch (err) {
             log.innerHTML += "<div><em>Error getting response. Try again.</em></div>";
