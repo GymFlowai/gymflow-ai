@@ -1,9 +1,8 @@
-<!-- Trigger redeploy: updated on June 9 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GymFlow AI</title>
   <style>
     body {
@@ -12,10 +11,12 @@
       margin: 0;
       padding: 2rem;
     }
+
     .container {
       max-width: 600px;
       margin: auto;
     }
+
     .pay-button {
       background-color: #4CAF50;
       color: white;
@@ -26,162 +27,116 @@
       display: inline-block;
       margin-top: 2rem;
     }
+
+    .chat-container {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      box-sizing: border-box;
+      width: 100%;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      background: #f9f9f9;
+      border-top: 1px solid #ccc;
+    }
+
+    .chat-container input {
+      flex: 1;
+      font-size: 16px;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin-right: 10px;
+    }
+
+    .chat-container button {
+      padding: 10px 14px;
+      font-size: 16px;
+      border: none;
+      background-color: #28a745;
+      color: white;
+      border-radius: 5px;
+    }
+
+    .chat-output {
+      margin-bottom: 70px; /* make room for chat bar */
+    }
+
+    .chat-bubble {
+      background-color: #eee;
+      border-radius: 12px;
+      padding: 10px;
+      margin: 10px;
+      max-width: 80%;
+      display: inline-block;
+      text-align: left;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Welcome to GymFlow AI</h1>
-    <p>Your AI-powered assistant for gyms. Automate leads, answer questions, and grow your memberships 24/7.</p>
-    <a href="https://buy.stripe.com/8wM6qR3kr6eR7Q8bII" target="_blank" class="pay-button">
-      Get Started – $149 AUD
-    </a>
+    <p>Your AI-powered assistant for gyms.<br />Automate leads, answer questions, and grow your memberships 24/7.</p>
+    <a class="pay-button" href="https://buy.stripe.com/..." target="_blank">Get Started – $149 AUD</a>
   </div>
 
-  <!-- Simple chatbot embed with mobile keyboard fix -->
-<script>
-  // Mobile keyboard fix
-  document.addEventListener("touchstart", function (event) {
-    if (
-      event.target.tagName === "INPUT" ||
-      event.target.tagName === "TEXTAREA" ||
-      event.target.isContentEditable
-    ) {
-      event.target.focus();
+  <div class="chat-output" id="chat-output"></div>
+
+  <div class="chat-container">
+    <input type="text" id="chat-input" placeholder="Type a message..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("chat-input");
+      const output = document.getElementById("chat-output");
+      const message = input.value.trim();
+      if (!message) return;
+
+      const userBubble = document.createElement("div");
+      userBubble.className = "chat-bubble";
+      userBubble.style.background = "#d1e7dd";
+      userBubble.textContent = message;
+      output.appendChild(userBubble);
+
+      input.value = "";
+
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message }),
+        });
+
+        const data = await res.json();
+        const botBubble = document.createElement("div");
+        botBubble.className = "chat-bubble";
+        botBubble.style.background = "#f8d7da";
+        botBubble.textContent = data.reply || "Sorry, no response.";
+        output.appendChild(botBubble);
+
+        output.scrollTop = output.scrollHeight;
+      } catch (err) {
+        const errBubble = document.createElement("div");
+        errBubble.className = "chat-bubble";
+        errBubble.style.background = "#f8d7da";
+        errBubble.textContent = "Error: Could not connect to AI.";
+        output.appendChild(errBubble);
+      }
     }
-  });
 
-  // Create chat bubble
-  (function () {
-    let botBubble = document.createElement('div');
-    botBubble.style.position = 'fixed';
-    botBubble.style.bottom = '20px';
-    botBubble.style.right = '20px';
-    botBubble.style.width = '60px';
-    botBubble.style.height = '60px';
-    botBubble.style.background = '#4CAF50';
-    botBubble.style.borderRadius = '50%';
-    botBubble.style.display = 'flex';
-    botBubble.style.justifyContent = 'center';
-    botBubble.style.alignItems = 'center';
-    botBubble.style.color = '#fff';
-    botBubble.style.fontSize = '30px';
-    botBubble.style.cursor = 'pointer';
-    botBubble.innerText = '💬';
-
-    botBubble.onclick = () => {
-      let chatContainer = document.createElement('div');
-      chatContainer.innerHTML = `
-        <div style="position:fixed;bottom:100px;right:20px;width:300px;">
-          <input id="chatInput" type="text" placeholder="Type a message..." style="width:100%;padding:10px;font-size:16px;">
-        </div>`;
-      document.body.appendChild(chatContainer);
-      setTimeout(() => document.getElementById('chatInput').focus(), 100);
-    };
-
-    document.body.appendChild(botBubble);
-  })();
-</script>
-  <!-- Chatbot UI and AI response handler -->
-<style>
-  #chatbot-box {
-    position: fixed;
-    bottom: 100px;
-    right: 20px;
-    width: 300px;
-    max-height: 400px;
-    overflow-y: auto;
-    background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 10px;
-    font-family: sans-serif;
-    font-size: 14px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
-  }
-  #chat-log {
-    max-height: 300px;
-    overflow-y: auto;
-    margin-bottom: 10px;
-  }
-  #chat-log div {
-    margin-bottom: 8px;
-  }
-  #chat-input {
-    width: 100%;
-    padding: 8px;
-    font-size: 14px;
-    box-sizing: border-box;
-  }
-</style>
-
-<script>
-  (function () {
-    let botBubble = document.createElement('div');
-    botBubble.style.position = 'fixed';
-    botBubble.style.bottom = '20px';
-    botBubble.style.right = '20px';
-    botBubble.style.width = '60px';
-    botBubble.style.height = '60px';
-    botBubble.style.background = '#4CAF50';
-    botBubble.style.borderRadius = '50%';
-    botBubble.style.display = 'flex';
-    botBubble.style.justifyContent = 'center';
-    botBubble.style.alignItems = 'center';
-    botBubble.style.color = '#fff';
-    botBubble.style.fontSize = '30px';
-    botBubble.style.cursor = 'pointer';
-    botBubble.innerText = '💬';
-
-    botBubble.onclick = () => {
-      if (document.getElementById('chatbot-box')) return;
-
-      let chatContainer = document.createElement('div');
-      chatContainer.id = 'chatbot-box';
-      chatContainer.innerHTML = `
-        <div id="chat-log"></div>
-        <input id="chat-input" type="text" placeholder="Ask me anything about fitness..." />
-      `;
-      document.body.appendChild(chatContainer);
-
-      const input = document.getElementById('chat-input');
-      const log = document.getElementById('chat-log');
-
-      input.focus();
-
-      input.addEventListener('keypress', async function (e) {
-        if (e.key === 'Enter') {
-          const userMsg = input.value.trim();
-          if (!userMsg) return;
-
-          log.innerHTML += "<div><strong>You:</strong> " + userMsg + "</div>";
-          input.value = "";
-          input.disabled = true;
-
-          try {
-            const res = await fetch("/api/chat", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ message: userMsg })
-            });
-            const data = await res.json();
-            console.log("API Response:", data);//
-            log.innerHTML += "<div><strong>GymFlow AI:</strong> ${data.reply || 'No response received."}</div>";
-          } catch (err) {
-            log.innerHTML += "<div><em>Error getting response. Try again.</em></div>";
-          }
-
-          input.disabled = false;
-          input.focus();
-          log.scrollTop = log.scrollHeight;
-        }
-      });
-    };
-
-    document.body.appendChild(botBubble);
-  })();
-</script>
-
+    // iOS keyboard fix
+    document.addEventListener("touchstart", function (event) {
+      if (
+        event.target.tagName === "INPUT" ||
+        event.target.tagName === "TEXTAREA" ||
+        event.target.isContentEditable
+      ) {
+        event.target.focus();
+      }
+    });
+  </script>
 </body>
 </html>
-
-
